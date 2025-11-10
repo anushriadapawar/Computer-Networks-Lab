@@ -1,0 +1,9 @@
+Compiling and Running the UDP Server:
+
+1. Save the code into a file, say udp_server.c.
+
+2. Compile the program:
+	gcc -o udp_server udp_server.c
+
+3. Run the server:
+	./udp_server

@@ -1,0 +1,54 @@
+Application Layer Packet Analysis using Packet Tracer Tool
+
+Aim: To analyze Application Layer packets (DNS & HTTP) using a packet tracer tool (Wireshark) and understand their structure and working.
+
+Tools Required:
+•	Wireshark (Packet Analyzer)
+•	Internet Connection or Local DNS/HTTP Server
+•	Browser or Command Line Tools (nslookup, ping)
+Procedure:
+Part A: DNS Packet Analysis
+1.	Start Wireshark and begin packet capture on the active network interface (WiFi/Ethernet).
+2.	Open Command Prompt or Terminal and type:
+3.	nslookup www.google.com
+4.	In Wireshark, stop the capture after response.
+5.	Apply filter:
+6.	dns
+7.	Select the DNS query and observe the following:
+o	Transaction ID
+o	Flags: Query/Response
+o	Query Name: e.g., www.google.com
+o	Query Type: A (IPv4)
+8.	Click on the DNS Response packet and observe:
+o	Resolved IP Address
+o	TTL (Time to Live)
+o	Answer Section
+Part B: HTTP Packet Analysis
+1.	In the browser, type:
+2.	http://example.com
+3.	In Wireshark, apply filter:
+4.	http
+5.	Observe the HTTP GET request:
+o	Method: GET
+o	Host: example.com
+o	User-Agent
+6.	Observe the HTTP Response:
+o	Status Code: 200 OK
+o	Content-Type: text/html
+o	Content-Length
+Observations:
+Field	DNS Query	DNS Response	HTTP Request	HTTP Response
+Protocol	UDP	UDP	TCP	TCP
+Port	53	53	80	80
+Method/Type	Standard Query (A Record)	Response	GET /	200 OK
+IP Address Queried	www.google.com	e.g., 142.250.77.68	example.com	IP of example.com
+TTL	-	300 seconds (example)	-	-
+Content-Type	-	-	-	text/html
+Result:
+Successfully analyzed DNS and HTTP packets using Wireshark. The structure and fields of Application Layer packets were observed and interpreted.
+
+ Conclusion:
+•	DNS resolves domain names to IP addresses via UDP port 53.
+•	HTTP works over TCP port 80, where the client sends a GET request and receives a response with status and content.
+•	Wireshark effectively captures and visualizes Application Layer communication for analysis and troubleshooting.
+

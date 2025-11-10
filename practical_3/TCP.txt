@@ -1,0 +1,9 @@
+Compiling and Running the Client:
+
+1. Save the code into a file, say tcp_client.c.
+
+2. Compile the client program:
+	gcc -o tcp_client tcp_client.c
+
+3. Run the client after running the server:
+	./tcp_client

@@ -1,0 +1,9 @@
+Compiling and Running the Server:
+
+1. Save the code into a file, say tcp_server.c.
+
+2. Compile the program:
+	gcc -o tcp_server tcp_server.c
+
+3. Run the server:
+	./tcp_server

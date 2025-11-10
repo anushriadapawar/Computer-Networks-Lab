@@ -1,0 +1,19 @@
+Running the Code:
+
+1. Compile the Sender and Receiver Programs:
+	
+	a. Save the sender code into a file called sender.c and the receiver code into a file called receiver.c.
+
+	b. Compile them using:
+		gcc -o sender sender.c -pthread
+		gcc -o receiver receiver.c -pthread
+
+
+2. Run the Programs:
+
+	a. Start the receiver first to simulate the receiver’s side:
+		./receiver
+
+
+	b. Then start the sender:
+		./sender

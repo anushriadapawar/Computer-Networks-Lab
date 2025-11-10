@@ -1,0 +1,9 @@
+Compiling and Running the UDP Client:
+
+1. Save the code into a file, say udp_client.c.
+
+2. Compile the client program:
+	gcc -o udp_client udp_client.c
+
+3. Run the client after running the server:
+	./udp_client
