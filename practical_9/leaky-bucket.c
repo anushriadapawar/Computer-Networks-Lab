@@ -1,5 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> // for sleep()
+
+int main() {
+    int bucket_size, output_rate, input_packets, interval;
+    int bucket_content = 0;
+
+    printf("Enter bucket size (in packets): ");
+    scanf("%d", &bucket_size);
+
+    printf("Enter output (leak) rate (packets/sec): ");
+    scanf("%d", &output_rate);
+
+    printf("Enter number of input intervals to simulate: ");
+    scanf("%d", &interval);
+
+    for (int i = 0; i < interval; i++) {
+        // Random number of incoming packets (simulate bursty traffic)
+        input_packets = rand() % 10;  // random 0–9 packets per second
+        printf("\nInterval %d: %d packets arrived.\n", i + 1, input_packets);
+
+        // Add incoming packets to the bucket
+        if (bucket_content + input_packets > bucket_size) {
+            int dropped = (bucket_content + input_packets) - bucket_size;
+            bucket_content = bucket_size;
+            printf("Bucket overflow! %d packet(s) dropped.\n", dropped);
+        } else {
+            bucket_content += input_packets;
+        }
+
+        // Leak (transmit) packets
+        printf("Transmitting %d packet(s).\n", 
+               (bucket_content < output_rate) ? bucket_content : output_rate);
+
+        if (bucket_content < output_rate)
+            bucket_content = 0;
+        else
+            bucket_content -= output_rate;
+
+        printf("Packets remaining in bucket: %d\n", bucket_content);
+
+        sleep(1); // wait 1 second to simulate time passing
+    }
+
+    printf("\nSimulation complete.\n");
+    return 0;
+}
+
+/*
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <time.h>
@@ -62,3 +112,4 @@ int main() {
     pthread_mutex_destroy(&lock);
     return 0;
 }
+*/
