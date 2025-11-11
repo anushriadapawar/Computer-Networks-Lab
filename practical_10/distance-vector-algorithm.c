@@ -1,4 +1,55 @@
 #include <stdio.h>
+#define INFINITY 999
+#define N 4 // Number of routers/nodes
+
+void printTable(int distance[N][N]) {
+    printf("Distance Table:\n");
+    for(int i=0;i<N;i++) {
+        for(int j=0;j<N;j++) {
+            if(distance[i][j] == INFINITY)
+                printf("INF\t");
+            else
+                printf("%d\t", distance[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+int main() {
+    // Example network cost matrix
+    int distance[N][N] = {
+        {0, 1, 3, INFINITY},
+        {1, 0, 1, 7},
+        {3, 1, 0, 2},
+        {INFINITY, 7, 2, 0}
+    };
+
+    // Distance vector algorithm (Bellman-Ford)
+    int updated;
+    do {
+        updated = 0;
+        for(int i=0;i<N;i++) {
+            for(int j=0;j<N;j++) {
+                for(int k=0;k<N;k++) {
+                    if(distance[i][k] + distance[k][j] < distance[i][j]) {
+                        distance[i][j] = distance[i][k] + distance[k][j];
+                        updated = 1;
+                    }
+                }
+            }
+        }
+    } while(updated);
+
+    // Print final distance table
+    printTable(distance);
+
+    return 0;
+}
+
+
+/*
+#include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -123,3 +174,4 @@ int main() {
     pthread_mutex_destroy(&lock);
     return 0;
 }
+*/
