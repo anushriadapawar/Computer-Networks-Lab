@@ -1,6 +1,73 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
+
+typedef struct {
+    int capacity;       // Maximum number of tokens
+    int tokens;         // Current number of tokens
+    int rate;           // Tokens added per second
+} TokenBucket;
+
+// Initialize the token bucket
+void initBucket(TokenBucket *bucket, int capacity, int rate) {
+    bucket->capacity = capacity;
+    bucket->tokens = capacity;  // start full
+    bucket->rate = rate;
+}
+
+// Refill tokens based on elapsed time
+void refillTokens(TokenBucket *bucket, int elapsed_seconds) {
+    bucket->tokens += bucket->rate * elapsed_seconds;
+    if (bucket->tokens > bucket->capacity)
+        bucket->tokens = bucket->capacity;
+}
+
+// Try to consume tokens to send a packet
+int sendPacket(TokenBucket *bucket, int packet_size) {
+    if (bucket->tokens >= packet_size) {
+        bucket->tokens -= packet_size;
+        return 1; // packet sent
+    } else {
+        return 0; // not enough tokens, packet dropped
+    }
+}
+
+int main() {
+    TokenBucket bucket;
+    int capacity = 10;  // max tokens
+    int rate = 2;       // tokens added per second
+    int packet_size = 3; // tokens needed per packet
+
+    initBucket(&bucket, capacity, rate);
+
+    srand(time(0));
+
+    for (int t = 0; t < 20; t++) {
+        // simulate time passing by 1 second
+        sleep(1);
+        refillTokens(&bucket, 1);
+
+        printf("Time %d sec: Tokens available = %d\n", t+1, bucket.tokens);
+
+        // Try to send a random number of packets
+        int packets_to_send = rand() % 3 + 1; // 1 to 3 packets
+        for (int i = 0; i < packets_to_send; i++) {
+            if (sendPacket(&bucket, packet_size))
+                printf("  Packet sent!\n");
+            else
+                printf("  Not enough tokens, packet dropped.\n");
+        }
+    }
+
+    return 0;
+}
+
+
+/*
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <time.h>
 
@@ -64,3 +131,4 @@ int main() {
     pthread_mutex_destroy(&lock);
     return 0;
 }
+*/
